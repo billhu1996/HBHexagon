@@ -14,6 +14,11 @@ import UIKit
 //    }
 //}
 
+enum ImageShape: Int {
+    case Circle = 0
+    case Hexagon = 1
+}
+
 extension UIImage {
     @objc var hb_hexagonImage: UIImage {
         let rect = CGRect(origin: CGPointZero, size: size)
@@ -36,5 +41,21 @@ extension UIImage {
         let hexagonImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         return hexagonImage
+    }
+}
+
+@objc class HBHexagonImageView: UIImageView {
+    var shape: ImageShape = ImageShape.Hexagon
+    override var image: UIImage? {
+        set {
+            if shape == ImageShape.Hexagon {
+                super.image = newValue?.hb_hexagonImage
+            } else {
+                super.image = newValue?.msr_roundedImage
+            }
+        }
+        get {
+            return super.image
+        }
     }
 }
