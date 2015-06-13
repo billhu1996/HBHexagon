@@ -14,7 +14,7 @@ import UIKit
 //    }
 //}
 
-enum ImageShape: Int {
+@objc enum ImageShape: NSInteger {
     case Circle = 0
     case Hexagon = 1
 }
@@ -45,7 +45,7 @@ extension UIImage {
 }
 
 @objc class HBHexagonImageView: UIImageView {
-    var shape: ImageShape = ImageShape.Hexagon
+    @objc var shape: ImageShape = ImageShape.Hexagon
     override var image: UIImage? {
         set {
             if shape == ImageShape.Hexagon {
