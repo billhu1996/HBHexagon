@@ -8,12 +8,6 @@
 
 import UIKit
 
-//class HBHexagon: UIView {
-//    static func makeHexagonImage() {
-//        
-//    }
-//}
-
 @objc enum ImageShape: NSInteger {
     case Circle = 0
     case Hexagon = 1
