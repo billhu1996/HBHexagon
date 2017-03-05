@@ -9,44 +9,40 @@
 import UIKit
 
 @objc enum ImageShape: NSInteger {
-    case Circle = 0
-    case Hexagon = 1
+    case circle = 0
+    case hexagon = 1
 }
 
 extension UIImage {
     @objc var hb_hexagonImage: UIImage {
-        let rect = CGRect(origin: CGPointZero, size: size)
+        let rect = CGRect(origin: CGPoint.zero, size: size)
         UIGraphicsBeginImageContextWithOptions(size, false, scale)
-        var context = UIGraphicsGetCurrentContext()
-        CGContextBeginPath(context);
-        CGContextSetRGBStrokeColor(context, 0, 0, 0, 1)
-        CGContextSetLineWidth(context, 1)
-        let center = CGPointMake(rect.size.width / 2, rect.size.height / 2)
-        CGContextMoveToPoint(context, rect.size.width, rect.size.height / 2)
+        let context = UIGraphicsGetCurrentContext()
+        context?.beginPath();
+        context?.setStrokeColor(red: 0, green: 0, blue: 0, alpha: 1)
+        context?.setLineWidth(1)
+        let center = CGPoint(x: rect.size.width / 2, y: rect.size.height / 2)
+        context?.move(to: CGPoint(x: rect.size.width, y: rect.size.height / 2))
         for i in 0..<6 {
             let i = CGFloat(i)
             let x = rect.size.width * sin((3 + 2 * i) * CGFloat(M_PI) / 6) / 2
             let y = rect.size.height * cos((-3 + 2 * i) * CGFloat(M_PI) / 6) / 2
-            CGContextAddLineToPoint(context, center.x + x, center.y + y)
+            context?.addLine(to: CGPoint(x: center.x + x, y: center.y + y))
         }
-        CGContextClosePath(context)
-        UIBezierPath(CGPath: CGContextCopyPath(context)).addClip()
-        drawInRect(rect)
+        context?.closePath()
+        UIBezierPath(cgPath: (context?.path!)!).addClip()
+        draw(in: rect)
         let hexagonImage = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-        return hexagonImage
+        return hexagonImage!
     }
 }
 
 @objc class HBHexagonImageView: UIImageView {
-    @objc var shape: ImageShape = ImageShape.Hexagon
+    @objc var shape: ImageShape = ImageShape.hexagon
     override var image: UIImage? {
         set {
-            if shape == ImageShape.Hexagon {
                 super.image = newValue?.hb_hexagonImage
-            } else {
-                super.image = newValue?.msr_roundedImage
-            }
         }
         get {
             return super.image
